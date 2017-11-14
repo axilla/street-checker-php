@@ -1,0 +1,14 @@
+api_register:
+    path:     /register
+    defaults: { _controller: "AppBundle:APIAuthorization:register" }
+    methods:  POST
+
+api_login:
+    path:     /login
+    defaults: { _controller: "AppBundle:APIAuthorization:login" }
+    methods:  POST
+
+api_logout:
+    path:     /logout
+    defaults: { _controller: "AppBundle:APIAuthorization:logout" }
+    methods:  POST

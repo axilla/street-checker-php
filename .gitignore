@@ -1,0 +1,17 @@
+/app/bootstrap.php.cache
+!app/cache/.gitkeep
+/app/config/parameters.yml
+/var/logs/*
+/var/cache/*
+/var/sessions/*
+!app/logs/.gitkeep
+/app/phpunit.xml
+/composer.phar
+/vendor/
+/web/bundles/
+/web/uploads/*
+!/web/uploads/avatars
+/src/CT/MainBundle/Resources/translations/*
+/logs/*
+.idea/*
+sh.exe.stackdump

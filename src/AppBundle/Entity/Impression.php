@@ -1,0 +1,270 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
+
+/**
+ * Impression entity store info about likes ar dislikes of the report
+ *
+ * @ORM\Table(name="impression")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ImpressionRepository")
+ */
+class Impression
+{
+    /* Type of Data */
+    const SC_NEUTRAL = 0;
+    const SC_LIKE    = 1;
+    const SC_DISLIKE = 2;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="type", type="smallint")
+     */
+    private $type;
+
+    /********************/
+    /*** Some Basics ****/
+    /********************/
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation_time", type="datetime")
+     */
+    private $creationTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_update_time", type="datetime")
+     */
+    private $lastUpdateTime;
+
+    /***** END Basics ****/
+
+    /******************** */
+    /**** Relations ***** */
+    /******************** */
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="impressions")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=false)
+     * */
+    private $owner;
+
+    /**
+     * @Exclude
+     * @ORM\ManyToOne(targetEntity="Report", inversedBy="impressions")
+     * @ORM\JoinColumn(name="report_id", referencedColumnName="id", nullable=false)
+     * */
+    private $report;
+
+    /************************ */
+    /**** Relations END ***** */
+    /************************ */
+
+
+    /**
+     * Constructor\
+     * @param int $type
+     * @param null $report
+     * @param null $owner
+     */
+    public function __construct($type = self::SC_LIKE, $report = NULL, $owner = NULL)
+    {
+        $this->setCreationTime(new \DateTime());
+        $this->setLastUpdateTime(new \DateTime());
+        $this->setType($type);
+        if ($owner) {
+            $this->setOwner($owner);
+        }
+        if ($report) {
+            $this->setReport($report);
+        }
+    }
+
+    public function __toString()
+    {
+        return (String)$this->getId();
+    }
+
+    /**
+     * Set Like as type of impression
+     * If like is already set we set 0
+     */
+    public function like()
+    {
+        if ($this->getType() == self::SC_LIKE) {
+            $this->setType(0);
+        } else {
+            $this->setType(self::SC_LIKE);
+        }
+
+        $this->setLastUpdateTime(new \DateTime());
+        return $this;
+    }
+
+
+    /**
+     * Set Dislike as type of impression
+     * If Dislike is already set we set 0
+     */
+    public function dislike()
+    {
+        if ($this->getType() == self::SC_DISLIKE) {
+
+            $this->setType(0);
+        } else {
+            $this->setType(self::SC_DISLIKE);
+        }
+        $this->setLastUpdateTime(new \DateTime());
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /*
+     * Rest Getters and setters for this entity
+     *
+     */
+
+    /**
+     * Set type
+     *
+     * @param integer $type
+     *
+     * @return Impression
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        $this->setLastUpdateTime(new \DateTime());
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set creationTime
+     *
+     * @param \DateTime $creationTime
+     *
+     * @return Impression
+     */
+    public function setCreationTime($creationTime)
+    {
+        $this->creationTime = $creationTime;
+
+        return $this;
+    }
+
+    /**
+     * Get creationTime
+     *
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * Set lastUpdateTime
+     *
+     * @param \DateTime $lastUpdateTime
+     *
+     * @return Impression
+     */
+    public function setLastUpdateTime($lastUpdateTime)
+    {
+        $this->lastUpdateTime = $lastUpdateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdateTime
+     *
+     * @return \DateTime
+     */
+    public function getLastUpdateTime()
+    {
+        return $this->lastUpdateTime;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \AppBundle\Entity\User $owner
+     *
+     * @return Impression
+     */
+    public function setOwner(\AppBundle\Entity\User $owner)
+    {
+        $this->owner = $owner;
+        $this->setLastUpdateTime(new \DateTime());
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set Report
+     *
+     * @param \AppBundle\Entity\Report $report
+     *
+     * @return Impression
+     */
+    public function setReport(\AppBundle\Entity\Report $report)
+    {
+        $this->report = $report;
+        $this->setLastUpdateTime(new \DateTime());
+        return $this;
+    }
+
+    /**
+     * Get Report
+     *
+     * @return \AppBundle\Entity\Report
+     */
+    public function getReport()
+    {
+        return $this->report;
+    }
+}

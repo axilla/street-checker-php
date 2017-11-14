@@ -1,0 +1,6 @@
+parameters:
+    #CDN
+    report.listObject: [id, lat, title, description, level , lng, active, creationTime]
+    report.largeObject: [id, title, description, address, lat, lng, level, urgency, type]
+
+    

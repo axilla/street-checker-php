@@ -1,0 +1,25 @@
+api_user_show_me:
+    path:     /me
+    defaults: { _controller: "AppBundle:APIUser:showMe" }
+    methods:  GET
+
+api_user_show:
+    path:     /{id}
+    defaults: { _controller: "AppBundle:APIUser:show" }
+    methods:  GET
+
+api_user_update_me:
+    path:     /me/update
+    defaults: { _controller: "AppBundle:APIUser:updateMe" }
+    methods:  POST
+
+api_user_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:APIUser:update" }
+    methods:  POST
+
+api_user_resolved_reports:
+    path:     /{id}/resolved-reports
+    defaults: { _controller: "AppBundle:APIReport:getOwnerResolvedReports" }
+    methods:  POST
+

@@ -1,0 +1,72 @@
+api_report_list:
+    path:     /
+    defaults: { _controller: "AppBundle:APIReport:list" }
+    methods:  GET
+
+api_report_resolved_reports_by_owner:
+    path:     /me/resolved
+    defaults: { _controller: "AppBundle:APIReport:getOwnerResolvedReports" }
+    methods:  GET
+
+api_reports_me:
+    path:     /me
+    defaults: { _controller: "AppBundle:APIReport:getOwnerReports" }
+    methods:  GET
+
+api_report_categories:
+    path:     /categories
+    defaults: { _controller: "AppBundle:APIReport:allCategories" }
+    methods:  GET
+
+api_report_show:
+    path:     /{id}
+    defaults: { _controller: "AppBundle:APIReport:show" }
+    methods:  GET
+    requirements:
+      id: \d+
+
+api_report_delete:
+    path:     /{id}
+    defaults: { _controller: "AppBundle:APIReport:delete" }
+    methods:  DELETE
+
+api_report_search:
+    path:     /search
+    defaults: { _controller: "AppBundle:APIReport:search" }
+    methods:  POST
+
+api_report_resolve:
+    path:     /{id}/resolve
+    defaults: { _controller: "AppBundle:APIReport:resolve" }
+    methods:  POST
+
+api_report_rate:
+    path:     /{id}/grade
+    defaults: { _controller: "AppBundle:APIReport:gradeReport" }
+    methods:  POST
+
+api_report_create:
+    path:     /create/
+    defaults: { _controller: "AppBundle:APIReport:create" }
+    methods:  POST
+
+api_report_edit:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:APIReport:update" }
+    methods:  POST
+
+api_report_add_image:
+    path:     /{id}/add-image
+    defaults: { _controller: "AppBundle:APIReport:addImages" }
+    methods:  POST
+
+api_report_delete_image:
+    path:     /{imageId}/delete-image
+    defaults: { _controller: "AppBundle:APIReport:deleteImage" }
+    methods:  DELETE
+
+api_report_reopen:
+    path:     /{id}/reopen
+    defaults: { _controller: "AppBundle:APIReport:reopenReport" }
+    methods:  POST
+

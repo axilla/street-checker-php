@@ -1,0 +1,229 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * RaportCategory
+ *
+ * @ORM\Table(name="raport_category")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RaportCategoryRepository")
+ */
+class RaportCategory
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+/********************/
+/*** Some Basics ****/
+/********************/
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation_time", type="datetime")
+     */
+    private $creationTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_update_time", type="datetime")
+     */
+    private $lastUpdateTime;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", options={"default": true})
+     */
+    private $active;
+
+/***** END Basics ****/
+
+/******************** */
+/**** Relations ***** */
+/******************** */
+
+    /**
+     * @ORM\OneToMany(targetEntity="Raport", mappedBy="category", orphanRemoval=true, cascade={"all"})
+     * */
+    private $raports;
+
+/************************ */
+/**** Relations END ***** */
+/************************ */
+
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setActive(1);
+        $this->setCreationTime(new \DateTime());
+        $this->setLastUpdateTime(new \DateTime());
+        $this->raports = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return RaportCategory
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set creationTime
+     *
+     * @param \DateTime $creationTime
+     *
+     * @return RaportCategory
+     */
+    public function setCreationTime($creationTime)
+    {
+        $this->creationTime = $creationTime;
+
+        return $this;
+    }
+
+    /**
+     * Get creationTime
+     *
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * Set lastUpdateTime
+     *
+     * @param \DateTime $lastUpdateTime
+     *
+     * @return RaportCategory
+     */
+    public function setLastUpdateTime($lastUpdateTime)
+    {
+        $this->lastUpdateTime = $lastUpdateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdateTime
+     *
+     * @return \DateTime
+     */
+    public function getLastUpdateTime()
+    {
+        return $this->lastUpdateTime;
+    }
+
+    /**
+     * Set active
+     *
+     * @param string $active
+     *
+     * @return RaportCategory
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return string
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Add raport
+     *
+     * @param \AppBundle\Entity\Raport $raport
+     *
+     * @return RaportCategory
+     */
+    public function addRaport(\AppBundle\Entity\Raport $raport)
+    {
+        $this->raports[] = $raport;
+
+        return $this;
+    }
+
+    /**
+     * Remove raport
+     *
+     * @param \AppBundle\Entity\Raport $raport
+     */
+    public function removeRaport(\AppBundle\Entity\Raport $raport)
+    {
+        $this->raports->removeElement($raport);
+    }
+
+    /**
+     * Get raports
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRaports()
+    {
+        return $this->raports;
+    }
+}

@@ -1,0 +1,321 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\SerializationContext;
+
+/**
+ * Comment
+ *
+ * @ORM\Table(name="comment")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CommentRepository")
+ */
+class Comment
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="text", type="string", length=1024)
+     */
+    private $text;
+
+    /********************/
+    /*** Some Basics ****/
+    /********************/
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation_time", type="datetime")
+     */
+    private $creationTime;
+
+    /**
+     * @var \DateTime
+     * @Exclude
+     * @ORM\Column(name="last_update_time", type="datetime")
+     */
+    private $lastUpdateTime;
+
+    /**
+     * @var boolean
+     * @Exclude
+     * @ORM\Column(name="active", options={"default": true})
+     */
+    private $active;
+
+    /***** END Basics ****/
+
+    /******************** */
+    /**** Relations ***** */
+    /******************** */
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=false)
+     * */
+    private $owner;
+
+    /**
+     * @Exclude
+     * @ORM\ManyToOne(targetEntity="Report", inversedBy="comments")
+     * @ORM\JoinColumn(name="report_id", referencedColumnName="id", nullable=false)
+     * */
+    private $report;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CommentImage", mappedBy="comment", orphanRemoval=true, cascade={"all"})
+     * */
+    private $commentImages;
+
+    private static $serializationContextArray = [
+        'Default',
+        'owner'    => ['basic_info'],
+        'solution' => ['basic_info']
+    ];
+
+
+    /************************ */
+    /**** Relations END ***** */
+    /************************ */
+
+    /**
+     * Constructor
+     */
+    public function __construct($text = NULL, $report = NULL, $owner = NULL)
+    {
+        $this->setActive(1);
+        $this->setCreationTime(new \DateTime());
+        $this->setLastUpdateTime(new \DateTime());
+        $this->commentImages = new ArrayCollection();
+        $this->setText($text);
+        if ($report) {
+            $this->setOwner($owner);
+        }
+        if ($owner) {
+            $this->setReport($report);
+        }
+    }
+
+    public function __toString()
+    {
+        return (string)$this->getText();
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     *
+     * @return Comment
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Get text
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * Set creationTime
+     *
+     * @param \DateTime $creationTime
+     *
+     * @return Comment
+     */
+    public function setCreationTime($creationTime)
+    {
+        $this->creationTime = $creationTime;
+
+        return $this;
+    }
+
+    /**
+     * Get creationTime
+     *
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * Set lastUpdateTime
+     *
+     * @param \DateTime $lastUpdateTime
+     *
+     * @return Comment
+     */
+    public function setLastUpdateTime($lastUpdateTime)
+    {
+        $this->lastUpdateTime = $lastUpdateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdateTime
+     *
+     * @return \DateTime
+     */
+    public function getLastUpdateTime()
+    {
+        return $this->lastUpdateTime;
+    }
+
+    /**
+     * Set active
+     *
+     * @param string $active
+     *
+     * @return Comment
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return string
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \AppBundle\Entity\User $owner
+     *
+     * @return Comment
+     */
+    public function setOwner(\AppBundle\Entity\User $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set Report
+     *
+     * @param \AppBundle\Entity\Report $report
+     *
+     * @return Comment
+     */
+    public function setReport(\AppBundle\Entity\Report $report)
+    {
+        $this->report = $report;
+
+        return $this;
+    }
+
+    /**
+     * Get Report
+     *
+     * @return \AppBundle\Entity\Report
+     */
+    public function getReport()
+    {
+        return $this->report;
+    }
+
+    /**
+     * Add commentImage
+     *
+     * @param \AppBundle\Entity\CommentImage $commentImage
+     *
+     * @return Comment
+     */
+    public function addCommentImage(\AppBundle\Entity\CommentImage $commentImage)
+    {
+        $this->commentImages[] = $commentImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove commentImage
+     *
+     * @param \AppBundle\Entity\CommentImage $commentImage
+     */
+    public function removeCommentImage(\AppBundle\Entity\CommentImage $commentImage)
+    {
+        $this->commentImages->removeElement($commentImage);
+    }
+
+    /**
+     * Get commentImages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCommentImages()
+    {
+        return $this->commentImages;
+    }
+
+    /**
+     * @return $this
+     */
+    public static function getSerializationContext()
+    {
+        return SerializationContext::create()->setGroups(self::$serializationContextArray);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSerializationContextArray()
+    {
+        return self::$serializationContextArray;
+    }
+}

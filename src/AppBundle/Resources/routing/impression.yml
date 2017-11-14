@@ -1,0 +1,10 @@
+api_rerport_like:
+    path:     /{reportId}/like
+    defaults: { _controller: "AppBundle:APIImpression:like" }
+    methods:  POST
+
+api_report_dislike:
+    path:     /{reportId}/dislike
+    defaults: { _controller: "AppBundle:APIImpression:dislike" }
+    methods:  POST
+

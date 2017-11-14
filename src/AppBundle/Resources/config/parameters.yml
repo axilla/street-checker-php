@@ -1,0 +1,40 @@
+parameters:
+    #Binary upload types
+    sc.images.binary.types:
+        - gif
+        - jpg
+        - jpeg
+        - png
+        - bmp
+
+    sc.cdn.local: 'http://street-checker.dev'
+    sc.thumb_small.width: 60
+    sc.thumb_small.height: 60
+    sc.thumb_big.width: 300
+    sc.thumb_big.height: 150
+    sc.photo_normal.width: 550
+    sc.photo_normal.height: 200
+
+    sc.avatar_directory : '%sc.cdn.local%/uploads/avatars'
+
+    sc.avatar_small: '%sc.avatar_directory%/small.png'
+    sc.avatar_medium: '%sc.avatar_directory%/med.png'
+    sc.avatar_large: '%sc.avatar_directory%/high.png'
+    sc.avatar_default: '%sc.avatar_directory%/avatar-default.png'
+
+    sc.photo_dimensions:
+      thumb_small:
+        width: 80
+        height: 40
+      thumb_big:
+        width: 300
+        height: 150
+      photo_medium:
+        width: 550
+        height: 200
+
+    web_dir: '%kernel.root_dir%/../web'
+
+    sc.number_of_likes: 3
+    sc.maximum_dislike_percentage: 20
+

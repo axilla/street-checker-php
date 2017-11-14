@@ -1,0 +1,18 @@
+parameters:
+    sc.forgot_pass.link: http://sc.rs/token/
+    sc.forgot_pass.ios_link: sc.rs://token/
+    sc.forgot_pass.token_duration: +4 hours
+    sc.locking.duration: +15 minutes
+    sc.token.duration: +72 hours
+    sc.closed_routes:
+     - api_report_delete
+     - api_report_create
+     - api_report_edit
+     - api_comment_create
+     - api_comment_delete
+     - api_report_like
+     - api_report_dislike
+     - api_user_update
+     - api_user_show_me
+     - api_user_update_me
+    sc.root_api_pass: 123

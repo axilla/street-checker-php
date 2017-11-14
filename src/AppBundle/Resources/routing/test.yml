@@ -1,0 +1,12 @@
+api_test_upload_image:
+    path:     /upload-scaled-image
+    defaults: { _controller: "AppBundle:APITest:uploadScaledPhoto" }
+    methods:  POST
+
+api_test:
+    path:     /create-scaled-images
+    defaults: { _controller: "AppBundle:APITest:createScaledPhotos" }
+    methods:  GET
+
+
+

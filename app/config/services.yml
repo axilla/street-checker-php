@@ -1,0 +1,77 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+    text_generator_helper.class: AppBundle\Helpers\TextGeneratorHelper
+    input_validator.class: AppBundle\Helpers\InputValidatorHelper
+    auth_service.class: AppBundle\Services\AuthorizationService
+    store_images.class: AppBundle\Services\StoreImagesService
+    image_uploader.class: AppBundle\Services\ImageUploaderService
+    report_validation.class: AppBundle\Services\ReportValidation
+
+services:
+    admin.report_category:
+        class: AppBundle\Admin\ReportCategoryAdmin
+        arguments: [~, AppBundle\Entity\ReportCategory, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Category }
+    admin.user:
+        class: AppBundle\Admin\UserAdmin
+        arguments: [~, AppBundle\Entity\User, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: User }
+    admin.report:
+        class: AppBundle\Admin\ReportAdmin
+        arguments: [~, AppBundle\Entity\Report, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Report }
+    admin.comment:
+        class: AppBundle\Admin\CommentAdmin
+        arguments: [~, AppBundle\Entity\Comment, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Comment }
+    admin.impression:
+            class: AppBundle\Admin\ImpressionAdmin
+            arguments: [~, AppBundle\Entity\Impression, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: Impression }
+    admin.report_grade:
+            class: AppBundle\Admin\ReportGradeAdmin
+            arguments: [~, AppBundle\Entity\ReportGrade, ~]
+            tags:
+                - { name: sonata.admin, manager_type: orm, label: ReportGrade }
+    helpers.text_generator:
+        class: %text_generator_helper.class%
+        arguments: ['@service_container']
+
+    helpers.input_validator:
+        class: %input_validator.class%
+        arguments: ['@service_container']
+
+    services.report_validation:
+        class: %report_validation.class%
+        arguments: ['@service_container', '@doctrine.orm.entity_manager']
+
+    services.auth_service:
+        class: %auth_service.class%
+        arguments: ['@service_container', '@doctrine.orm.entity_manager']
+
+    services.store_images:
+        class: %store_images.class%
+        arguments: ['@service_container', '@doctrine.orm.entity_manager']
+
+    services.image_uploader:
+        class: %image_uploader.class%
+        arguments: ['@service_container', '@doctrine.orm.entity_manager']
+
+    #Authorization Listener
+    kernel.listener.authorization:
+        class: AppBundle\EventListener\AuthorizationListener
+        arguments: ['@doctrine.orm.entity_manager', '@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+#    entity.report.like_or_dislike:
+#        class: AppBundle\EventListener\LikeDislikeReportListener
+#        arguments: ['@doctrine.orm.entity_manager', '@service_container']
+#        tags
+#            - { name: kernel.event_listener, event: entity.report.like_or_dislike, method: onCustomEvent }

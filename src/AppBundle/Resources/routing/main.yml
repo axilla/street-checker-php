@@ -1,0 +1,23 @@
+sc_main_api_raport:
+    resource: "@AppBundle/Resources/routing/report.yml"
+    prefix:   /api/report
+
+sc_main_api_comment:
+    resource: "@AppBundle/Resources/routing/comment.yml"
+    prefix:   /api/report/comment
+
+sc_main_api_impression:
+    resource: "@AppBundle/Resources/routing/impression.yml"
+    prefix:   /api/report
+
+sc_main_api_authorization:
+    resource: "@AppBundle/Resources/routing/authorization.yml"
+    prefix:   /api/auth
+
+sc_main_api_user:
+    resource: "@AppBundle/Resources/routing/user.yml"
+    prefix:   /api/user
+
+sc_main_test:
+    resource: "@AppBundle/Resources/routing/test.yml"
+    prefix:   /api/test

@@ -1,0 +1,589 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Raport
+ *
+ * @ORM\Table(name="raport")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RaportRepository")
+ */
+class Raport
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=1025, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="lat", type="float")
+     */
+    private $lat;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="lng", type="float")
+     */
+    private $lng;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="string", length=1025, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="level", type="smallint", nullable=true)
+     */
+    private $level;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="urgency", type="smallint", nullable=true)
+     */
+    private $urgency;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=15)
+     */
+    private $type;
+
+/********************/
+/*** Some Basics ****/
+/********************/
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creation_time", type="datetime")
+     */
+    private $creationTime;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_update_time", type="datetime")
+     */
+    private $lastUpdateTime;
+
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", options={"default": true})
+     */
+    private $active;
+
+/***** END Basics ****/
+
+/******************** */
+/**** Relations ***** */
+/******************** */
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="raports")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", nullable=false)
+     * */
+    private $owner;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="raport", orphanRemoval=true, cascade={"all"})
+     * */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Impression", mappedBy="raport", orphanRemoval=true, cascade={"all"})
+     * */
+    private $impressions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="RaportImage", mappedBy="raport", orphanRemoval=true, cascade={"all"})
+     * */
+    private $raportImages;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RaportCategory", inversedBy="raports")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
+     * */
+    private $category;
+
+
+/************************ */
+/**** Relations END ***** */
+/************************ */
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setActive(1);
+        $this->setCreationTime(new \DateTime());
+        $this->setLastUpdateTime(new \DateTime());
+        $this->comments = new ArrayCollection();
+        $this->impressions = new ArrayCollection();
+        $this->raportImages = new ArrayCollection();
+
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return Raport
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Raport
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set lat
+     *
+     * @param float $lat
+     *
+     * @return Raport
+     */
+    public function setLat($lat)
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Get lat
+     *
+     * @return float
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * Set lng
+     *
+     * @param float $lng
+     *
+     * @return Raport
+     */
+    public function setLng($lng)
+    {
+        $this->lng = $lng;
+
+        return $this;
+    }
+
+    /**
+     * Get lng
+     *
+     * @return float
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Raport
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set level
+     *
+     * @param integer $level
+     *
+     * @return Raport
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return int
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * Set urgency
+     *
+     * @param integer $urgency
+     *
+     * @return Raport
+     */
+    public function setUrgency($urgency)
+    {
+        $this->urgency = $urgency;
+
+        return $this;
+    }
+
+    /**
+     * Get urgency
+     *
+     * @return int
+     */
+    public function getUrgency()
+    {
+        return $this->urgency;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Raport
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set creationTime
+     *
+     * @param \DateTime $creationTime
+     *
+     * @return Raport
+     */
+    public function setCreationTime($creationTime)
+    {
+        $this->creationTime = $creationTime;
+
+        return $this;
+    }
+
+    /**
+     * Get creationTime
+     *
+     * @return \DateTime
+     */
+    public function getCreationTime()
+    {
+        return $this->creationTime;
+    }
+
+    /**
+     * Set lastUpdateTime
+     *
+     * @param \DateTime $lastUpdateTime
+     *
+     * @return Raport
+     */
+    public function setLastUpdateTime($lastUpdateTime)
+    {
+        $this->lastUpdateTime = $lastUpdateTime;
+
+        return $this;
+    }
+
+    /**
+     * Get lastUpdateTime
+     *
+     * @return \DateTime
+     */
+    public function getLastUpdateTime()
+    {
+        return $this->lastUpdateTime;
+    }
+
+    /**
+     * Set active
+     *
+     * @param string $active
+     *
+     * @return Raport
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return string
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \AppBundle\Entity\User $owner
+     *
+     * @return Raport
+     */
+    public function setOwner(\AppBundle\Entity\User $owner)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return Raport
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add impression
+     *
+     * @param \AppBundle\Entity\Impression $impression
+     *
+     * @return Raport
+     */
+    public function addImpression(\AppBundle\Entity\Impression $impression)
+    {
+        $this->impressions[] = $impression;
+
+        return $this;
+    }
+
+    /**
+     * Remove impression
+     *
+     * @param \AppBundle\Entity\Impression $impression
+     */
+    public function removeImpression(\AppBundle\Entity\Impression $impression)
+    {
+        $this->impressions->removeElement($impression);
+    }
+
+    /**
+     * Get impressions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getImpressions()
+    {
+        return $this->impressions;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\RaportCategory $category
+     *
+     * @return Raport
+     */
+    public function setCategory(\AppBundle\Entity\RaportCategory $category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\RaportCategory
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Add raportImage
+     *
+     * @param \AppBundle\Entity\RaportImage $raportImage
+     *
+     * @return Raport
+     */
+    public function addRaportImage(\AppBundle\Entity\RaportImage $raportImage)
+    {
+        $this->raportImages[] = $raportImage;
+
+        return $this;
+    }
+
+    /**
+     * Remove raportImage
+     *
+     * @param \AppBundle\Entity\RaportImage $raportImage
+     */
+    public function removeRaportImage(\AppBundle\Entity\RaportImage $raportImage)
+    {
+        $this->raportImages->removeElement($raportImage);
+    }
+
+    /**
+     * Get raportImages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRaportImages()
+    {
+        return $this->raportImages;
+    }
+}

@@ -1,0 +1,15 @@
+api_comment_create:
+    path:     /{reportId}/create
+    defaults: { _controller: "AppBundle:APIComments:create" }
+    methods:  POST
+
+api_comment_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AppBundle:APIComments:delete" }
+    methods:  DELETE
+
+api_comment_update:
+    path:     /{id}/update
+    defaults: { _controller: "AppBundle:APIComments:update" }
+    methods:  POST
+
